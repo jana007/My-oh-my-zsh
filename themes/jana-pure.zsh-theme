@@ -49,7 +49,7 @@ git_dirty() {
 # Display information about the current repository
 #
 repo_information() {
-    echo "%F{blue}${vcs_info_msg_0_%%/.} %F{8}$vcs_info_msg_1_`git_dirty` $vcs_info_msg_2_%f"
+    echo "%F{blue}${vcs_info_msg_0_%%/.} %F{8}$vcs_info_msg_1_`git_dirty` $vcs_info_msg_2_%f%{$fg_bold[blue]%}$(svn_prompt_info)%f"
 }
 
 # Displays the exec time of the last command if set threshold was exceeded
@@ -71,17 +71,27 @@ preexec() {
 #
 precmd() {
     vcs_info # Get version control info before we start outputting stuff
-    print -P "\n$(repo_information) %F{yellow}$(cmd_exec_time)%f"
+    print -P "\n$(repo_information)%F{yellow}$(cmd_exec_time)%f"
+# $(svn_prompt_info) %F{blue}] %F{green}%D{%L:%M} %F{yellow}%D{%p}%f"
 }
 
 # Define prompts
 #
-PROMPT='
- %{$fg_bold[green]%}${PWD/#$HOME/~}
- %{$reset_color%}$(hg_prompt_info)%(?.%F{magenta}.%F{red})❯%f ' # Display a red prompt char on failure
-#PROMPT="%(?.%F{magenta}.%F{red})❯%f " # Display a red prompt char on failure
-RPROMPT="%F{8}${SSH_TTY:+%n@%m}%f"    # Display username if connected via SSH
+PROMPT='%{$fg_bold[green]%}${PWD/#$HOME/home}
+%{$reset_color%}$(hg_prompt_info)%(?.%F{magenta}.%F{red})❯%f '
+# Display a red prompt char on failure
+RPROMPT="%F{8}${SSH_TTY:+%n@%m}%f"
+# Display username if connected via SSH
+RPROMPT='%{$fg_bold[green]%}%D{%L:%M} %F{yellow}%D{%p}%f%{$reset_color%}'
 
+# ZSH_THEME_GIT_PROMPT_PREFIX="%F{yellow}"
+# ZSH_THEME_GIT_PROMPT_SUFFIX="%f"
+# ZSH_THEME_GIT_PROMPT_DIRTY=" %F{red}*%f"
+# ZSH_THEME_GIT_PROMPT_CLEAN=""
+# ZSH_THEME_SVN_PROMPT_PREFIX="%F{yellow}"
+# ZSH_THEME_SVN_PROMPT_SUFFIX="%f"
+# ZSH_THEME_SVN_PROMPT_DIRTY=" %F{red}*%f"
+# ZSH_THEME_SVN_PROMPT_CLEAN=""
 # ------------------------------------------------------------------------------
 #
 # List of vcs_info format strings:
@@ -106,4 +116,19 @@ RPROMPT="%F{8}${SSH_TTY:+%n@%m}%f"    # Display username if connected via SSH
 # %m => shortname host
 # %(?..) => prompt conditional - %(condition.true.false)
 #
-# ------------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+# prompt_svn() {
+#    local rev branch
+#    if in_svn; then
+#        rev=$(svn_get_rev_nr)
+#        branch=$(svn_get_branch_name)
+#        if [[ $(svn_dirty_choose_pwd 1 0) -eq 1 ]]; then
+#            prompt_segment yellow black
+#            echo -n "$rev@$branch"
+#            echo -n "±"
+#        else
+#            prompt_segment green black
+#            echo -n "$rev@$branch"
+#        fi
+#    fi
+#}

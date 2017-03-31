@@ -1,0 +1,12 @@
+3den.zsh-theme
+a.txt
+af-magic.zsh-theme
+awesomepanda.zsh-theme
+blinks.zsh-theme
+candy-kingdom.zsh-theme
+candy.zsh-theme
+crcandy.zsh-theme
+crunch.zsh-theme
+dpoggi.zsh-theme
+fishy.zsh-theme
+temp.sh
